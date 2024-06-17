@@ -128,7 +128,7 @@ export const createTable = (data: any) => {
   markdownTable += `| ${headers.map(() => "---").join(" | ")} |\n`;
 
   // Create the data rows
-  data.forEach((task) => {
+  data.forEach((task: { [x: string]: any; }) => {
     const row = headers.map((header) => {
       const value = task[header.toLowerCase().replace(" ", "_")];
       if (Array.isArray(value)) {
