@@ -15,13 +15,11 @@ const fetcher = (url: string, options: RequestInit = {}) => {
 	return request;
 };
 
-export const getToken = async (code: string) => {
+export const getToken = async (code: string, clientId: string, clientSecret: string) => {
 	if (!code) return "MISSING_CODE";
-	const CLICK_UP_CLIENT = process.env.CLICK_UP_CLIENT ?? "";
-	const CLICK_UP_SECRET = process.env.CLICK_UP_SECRET ?? "";
 	const query = new URLSearchParams({
-		client_id: CLICK_UP_CLIENT,
-		client_secret: CLICK_UP_SECRET,
+		client_id: clientId,
+		client_secret: clientSecret,
 		code: code,
 	}).toString();
 
@@ -29,7 +27,7 @@ export const getToken = async (code: string) => {
 		const resp = await fetcher(`oauth/token?${query}`, {
 			method: "POST",
 		});
-		const data = (await resp.json) as {
+		const data = (await resp.json()) as {
 			access_token: string;
 			type: string;
 		};

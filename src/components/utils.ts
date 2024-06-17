@@ -113,52 +113,33 @@ export function getElementHTML(element: any) {
 	return html;
 }
 export const createTable = (data: any) => {
-	const table = document.createElement("table");
-	table.classList.add("my-table");
-	const thead = document.createElement("thead");
-	const headerRow = document.createElement("tr");
-	const headers = [
-		"Order",
-		"Name",
-		"Status",
-		"Date Created",
-		"Creator",
-		"Assignee",
-		"Priority",
-	];
-	headers.forEach((headerText) => {
-		const th = document.createElement("th");
-		th.textContent = headerText;
-		headerRow.appendChild(th);
-	});
-	thead.appendChild(headerRow);
-	table.appendChild(thead);
+  const headers = [
+    "Order",
+    "Name",
+    "Status",
+    "Date Created",
+    "Creator",
+    "Assignee",
+    "Priority"
+  ];
 
-	// Create table body
-	const tbody = document.createElement("tbody");
-	data.forEach((task: any) => {
-		const row = document.createElement("tr");
-		Object.values(task).forEach((value) => {
-			const cell = document.createElement("td");
-			if (Array.isArray(value)) {
-				const select = document.createElement("select");
-				value.map(String).forEach((item) => {
-					const option = document.createElement("option");
-					option.value = item;
-					option.textContent = item;
-					select.appendChild(option);
-				});
-				cell.appendChild(select);
-			} else {
-				cell.textContent = String(value);
-			}
-			row.appendChild(cell);
-		});
-		tbody.appendChild(row);
-	});
-	table.appendChild(tbody);
+  // Create the header row
+  let markdownTable = `| ${headers.join(" | ")} |\n`;
+  markdownTable += `| ${headers.map(() => "---").join(" | ")} |\n`;
 
-	return getElementHTML(table);
+  // Create the data rows
+  data.forEach((task) => {
+    const row = headers.map((header) => {
+      const value = task[header.toLowerCase().replace(" ", "_")];
+      if (Array.isArray(value)) {
+        return value.join(", ");
+      }
+      return String(value);
+    });
+    markdownTable += `| ${row.join(" | ")} |\n`;
+  });
+
+  return markdownTable;
 };
 export const createFolder = ({
 	folder,
