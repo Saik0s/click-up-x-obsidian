@@ -143,20 +143,20 @@ export class ClickUpSettingTab extends PluginSettingTab {
 					createFolder({ folder: `ClickUp`, vault: this.app.vault });
 					for (const team of teams) {
 						createFolder({
-							folder: `ClickUp/${team.name}`,
+							folder: `1. Projects`,
 							vault: this.app.vault,
 						});
 						const spaces = await getSpaces(team.id);
 						for (const space of spaces) {
 							createFolder({
-								folder: `ClickUp/${team.name}/${space.name} - [${space.id}]`,
+								folder: `1. Projects/${space.name} - [${space.id}]`,
 								vault: this.app.vault,
 							});
 							const folders = await getFolders(space.id);
 
 							for (const folder of folders || []) {
 								createFolder({
-									folder: `ClickUp/${team.name}/${space.name} - [${space.id}]/${folder.name}`,
+									folder: `1. Projects/${space.name} - [${space.id}]/${folder.name}`,
 									vault: this.app.vault,
 								});
 							}
@@ -188,7 +188,7 @@ export class ClickUpSettingTab extends PluginSettingTab {
 									}
 								);
 								const tableHTML = createTable(rows);
-								const filePath = `/ClickUp/${team.name}/${space.name} - [${space.id}]/${list_item.name}[${list_item.id}].md`;
+								const filePath = `/1. Projects/${space.name} - [${space.id}]/${list_item.name}[${list_item.id}].md`;
 								vault
 									.create(filePath, tableHTML)
 									.then(() => {})
