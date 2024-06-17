@@ -24,17 +24,22 @@ export const getToken = async (code: string, clientId: string, clientSecret: str
 	}).toString();
 
 	try {
+		console.log("Starting getToken request with query:", query);
 		const resp = await fetcher(`oauth/token?${query}`, {
 			method: "POST",
 		});
-		const data = (await resp.json()) as {
+		console.log("Received response from getToken request:", resp);
+		const data = (await resp.json) as {
 			access_token: string;
 			type: string;
 		};
+		console.log("Parsed response data:", data);
 		localStorage.setItem("click_up_token", data.access_token);
+		console.log("Stored access token in localStorage");
 		return data.access_token;
 	} catch (error: any) {
 		console.error("Error during getToken()", error);
+		throw new Error(`Failed to get token: ${error.message}`);
 	}
 };
 
